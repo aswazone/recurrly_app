@@ -1,8 +1,16 @@
 import {SplashScreen, Stack} from "expo-router";
+import { Text, View } from 'react-native';
 import '@/global.css';
 import {useFonts} from 'expo-font';
 import {useEffect} from "react";
+import { ClerkProvider } from '@clerk/expo';
+import { tokenCache } from '@clerk/expo/token-cache';
 
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+    throw new Error('Add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY to your .env file');
+}
 
 export default function RootLayout() {
     const [fontsLoaded] = useFonts({
@@ -22,5 +30,9 @@ export default function RootLayout() {
 
     if (!fontsLoaded) return null;
 
-    return <Stack screenOptions={{headerShown: false}}/>;
+    return (
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+            <Stack screenOptions={{headerShown: false}}/>
+        </ClerkProvider>
+    );
 }
