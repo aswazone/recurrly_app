@@ -12,7 +12,7 @@ if (!publishableKey) {
     throw new Error('Add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY to your .env file');
 }
 
-export default function RootLayout() {
+const InitialLayout = () => {
     const [fontsLoaded] = useFonts({
         'sans-regular': require('../assets/fonts/PlusJakartaSans-Regular.ttf'),
         'sans-light': require('../assets/fonts/PlusJakartaSans-Light.ttf'),
@@ -20,7 +20,7 @@ export default function RootLayout() {
         'sans-bold': require('../assets/fonts/PlusJakartaSans-Bold.ttf'),
         'sans-semibold': require('../assets/fonts/PlusJakartaSans-SemiBold.ttf'),
         'sans-extrabold': require('../assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
-    })
+    });
 
     useEffect(() => {
         if (fontsLoaded) {
@@ -30,9 +30,13 @@ export default function RootLayout() {
 
     if (!fontsLoaded) return null;
 
+    return <Stack screenOptions={{headerShown: false}} />;
+};
+
+export default function RootLayout() {
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-            <Stack screenOptions={{headerShown: false}}/>
+            <InitialLayout />
         </ClerkProvider>
     );
 }
